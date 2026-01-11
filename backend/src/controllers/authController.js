@@ -147,3 +147,25 @@ export const adminLogin = async (req, res) => {
         })
     }
 }
+
+//user get profile
+
+export const getProfile= async(req,res)=>{
+    try {
+        const {id} = req.user
+        const user = await User.findById(id).select("-password")
+        if(!user){
+            return res.status(404).json({
+                message:"user not found",
+                success:false
+            })
+        }
+        res.status(201).json(user)
+
+    } catch (error) {
+                return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        })
+    }
+}
