@@ -40,7 +40,7 @@ export const addCategory=async(req,res)=>{
 
 export const getAllcategory=async(req,res)=>{
     try {
-        const categories=await Category.find().toSorted({createdAt:-1})
+        const categories=await Category.find().sort({createdAt:-1})
         res.status(200).json({
             success:true,
             categories
@@ -71,7 +71,7 @@ export const updateCategory= async(req,res)=>{
             category.image=result.secure_url
         }
         if(name) category.name=name;
-        await Category.save()
+        await category.save()
 
          return res.status(201).json({
             message: "category updated",
