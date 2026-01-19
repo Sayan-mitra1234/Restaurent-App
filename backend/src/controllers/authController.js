@@ -136,6 +136,7 @@ export const adminLogin = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         });
         res.status(201).json({
+            admin:{admin:adminEmail},
             message: "admin login successfully",
             success: true
         })
@@ -164,6 +165,19 @@ export const getProfile= async(req,res)=>{
 
     } catch (error) {
                 return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        })
+    }
+}
+
+export const isAuth = async(req,res)=>{
+    try {
+        const {id} = req.user
+        const user =await User.findById(id).select("-password")
+        res.json({success:true,user})
+    } catch (error) {
+              return res.status(500).json({
             message: "Internal server error",
             success: false
         })
