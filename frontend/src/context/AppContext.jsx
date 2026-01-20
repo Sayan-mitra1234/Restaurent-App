@@ -11,6 +11,21 @@ const AppContextProvider = ({children})=>{
     const [loading,setLoading] = useState(false)
     const [user,setUser] = useState(null)
     const [admin,setAdmin] = useState(null)
+    const [categories,setCategories] = useState([])
+
+    const fetchCategories= async()=>{
+        try {
+            const {data} = await axios.get("/api/category/get")
+            if(data.success){
+                setCategories(data.categories)
+            }else{
+                console.log("failed to fetch the categories")
+            }
+        } catch (error) {
+            console.log("Error fetching categories",error)
+        }
+    }
+
     const isAuth=async()=>{
         try {
             const {data}=await axios.get("/api/auth/is-auth")
@@ -23,8 +38,9 @@ const AppContextProvider = ({children})=>{
     }
     useEffect(()=>{
         isAuth()
+        fetchCategories()
     },[])
-    const value={loading,setLoading,user,setUser,axios,admin,setAdmin}
+    const value={loading,setLoading,user,setUser,axios,admin,setAdmin,categories,fetchCategories}
     return(
         <AppContext.Provider value={value}>
             {children}
